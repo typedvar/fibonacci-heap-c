@@ -1,0 +1,58 @@
+# author : Avinandan Sengupta 
+# reg no : 2010CSY7543
+# description : generic makefile include rules
+#               for C and C++ projects
+#               project Makefile will include this file
+#               supports parameters build types and functions
+
+
+INC=-I../include $(SPECIAL_INCS)
+SRC=../src
+
+ARFLAGS=rcs
+DYNFLAGS=-fPIC
+EXEFLAGS=-Bstatic
+DBGFLAGS=
+
+ifeq ($(BLDTYPE),debug)
+    SUFFIX=_g
+    DBGFLAGS=-g
+    CPPFLAGS=-D_DEBUG
+endif
+
+ifeq ($(OUTPUTDIR),)
+    OUTPUTDIR=.
+endif
+
+ifeq ($(TYPE),static_lib)
+    STATIC_LIB_TARGET=$(NAME)$(SUFFIX).a
+    TARGET=$(STATIC_LIB_TARGET)
+else ifeq ($(TYPE),dynamic_lib)
+    DYN_LIB_TARGET=$(NAME)$(SUFFIX).so
+    TARGET=$(DYN_LIB_TARGET)
+else ifeq ($(TYPE),exe)
+    EXE_TARGET=$(NAME)$(SUFFIX).exe
+    TARGET=$(EXE_TARGET)
+endif
+
+OBJS := $(patsubst $(SRC)/%.c,%$(SUFFIX).o,$(wildcard $(SRC)/*.c))
+
+all : $(TARGET) 
+
+clean : 
+	$(RM) $(OBJS) $(TARGET)
+
+$(STATIC_LIB_TARGET) : $(OBJS)
+	$(AR) $(ARFLAGS) $(OUTPUTDIR)/$@ $(OBJS) 
+
+$(DYN_LIB_TARGET) : $(OBJS)
+	$(CC) $(DYNFLAGS) $(OBJS) -L$(OUTPUTDIR) -L$(LIBPATH) $(LIBS) -o $(OUTPUTDIR)/$@
+
+$(EXE_TARGET) : $(OBJS)
+	$(CC) $(EXEFLAGS) $(OBJS) -L$(OUTPUTDIR) -L$(LIBPATH) $(LIBS) -o $(OUTPUTDIR)/$@
+
+%$(SUFFIX).o : $(SRC)/%.c
+	$(CC) $(CPPFLAGS) $(DBGFLAGS) -c $(INC) $< -o $@ 
+
+# end of file
+
