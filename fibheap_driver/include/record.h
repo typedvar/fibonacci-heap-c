@@ -1,8 +1,5 @@
 /*
  * author     : avinandan sengupta
- * reg no     : 2010CSY7543
- * course     : CSL630
- * assignment : Fibonacci heap
  * file       : record.h
  * purpose    : defines the file format
  *              and associated record structure
