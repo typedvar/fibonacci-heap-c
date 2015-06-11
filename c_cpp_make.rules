@@ -1,5 +1,4 @@
 # author : Avinandan Sengupta 
-# reg no : 2010CSY7543
 # description : generic makefile include rules
 #               for C and C++ projects
 #               project Makefile will include this file
