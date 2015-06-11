@@ -1,8 +1,5 @@
 /*
  * author     : avinandan sengupta
- * reg no     : 2010CSY7543
- * course     : CSL630
- * assignment : Fibonacci heap
  * file       : data_processor.h
  * purpose    : declaration for the file data
  *              processing entry function
